@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>RxJs Game</title>
+<script defer src="bundlef816cdd5745ca86a9172.js"></script></head>
+
+<body>
+  <div class="alert" id="alert">
+    <h1>Game Over</h1>
+    <div class="control-container">
+      <button type="button" id="start" class="btn start">Start Over</button>
+    </div>
+  </div>
+
+  <div class="mode-switcher">
+    <h2>
+      Game Mode
+    </h2>
+
+    <form name="modeSwitcher">
+      <label for="classic">
+        Classic
+        <input type="radio" name="mode" value="classic" id="classic" checked="checked">
+      </label>
+
+      <label for="hard">
+        Hard
+        <input type="radio" name="mode" value="hard" id="hard">
+      </label>
+    </form>
+  </div>
+
+  <div class="speed-controller">
+    <h2>
+      Game Speed
+    </h2>
+
+    <div class="controller">
+      <div>Speed: <span id="speed">100<small>ms</small></span></div>
+      <input type="range" id="speedInp" value="100" min="1" max="3000">
+    </div>
+  </div>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <div id="matrix" class="classic"></div>
+  <!-- for-hard -->
+</body>
+
+</html>
