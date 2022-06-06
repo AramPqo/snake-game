@@ -4,7 +4,7 @@ import { alert } from './utils/alert';
 import { grid, snake, matrix, createSquares } from './matrix';
 import { toggleClass, togglePoint } from './utils/toggler';
 import { mode$ } from './utils/modes';
-import { speedInp, switchNumber, keyCodes, transformCodes, squareCount } from './utils/constants';
+import { sppedRegulator, switchNumber, keyCodes, transformCodes, squareCount } from './utils/constants';
 import { takeHeadIndex, takeHead } from './utils/snake-head';
 
 let speed = 500;
@@ -33,7 +33,7 @@ const startTimer$ = new BehaviorSubject(speed)
   );
 
 // Speed Controller
-fromEvent(speedInp, 'input').pipe(
+fromEvent(sppedRegulator, 'input').pipe(
   debounceTime(600),
   map(event => parseInt(+event.target.value)),
   tap(speed => {
@@ -59,15 +59,16 @@ const keyPress$ =
       ) ? activeKeyCode : keyCode
     ),
     distinctUntilChanged(),
+    tap(() => {
+      if (window.innerWidth <= 680) {
+        navigator.vibrate(300);
+      }
+    }),
     switchMap((keyCode) => startTimer$.pipe(map(index => keyCode))),
     tap(keyCode => {
       direction = keyCodes[keyCode];
       if (activeKeyCode !== keyCode) {
         toggleClass(grid[snake[0]], false, transformCodes[activeKeyCode]);
-      }
-
-      if (window.innerWidth <= 680) {
-        navigator.vibrate(300);
       }
 
       move(keyCode);

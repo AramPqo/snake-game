@@ -1,4 +1,4 @@
-export const speedInp = document.getElementById('speedInp');
+export const sppedRegulator = document.getElementById('sppedRegulator');
 export const squareCount = 3200;
 export const switchNumber = 64;
 export const keyCodes = {

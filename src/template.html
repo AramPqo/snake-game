@@ -4,56 +4,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+
   <title>RxJs Game</title>
 </head>
 
+<style>
+  .main {
+    display: none;
+  }
+
+  .loader {
+    position: absolute;
+    width: 99%;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  .loader div {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid teal;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
 <body>
-  <div class="alert" id="alert">
-    <div class="alert-content">
-      <h1>Game Over</h1>
-      <div class="control-container">
-        <button type="button" id="start" class="btn start">Start Over</button>
+
+  <div class="loader">
+    <div></div>
+  </div>
+
+  <div class="main">
+
+    <div class="alert" id="alert">
+      <div class="alert-content">
+        <h1>Game Over</h1>
+        <div class="control-container">
+          <button type="button" id="start" class="btn start">Start Over</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="mode-switcher">
-    <h2>
-      Game Mode
-    </h2>
+    <div class="mode-switcher">
+      <h2>
+        Game Mode
+      </h2>
 
-    <form name="modeSwitcher">
-      <label for="classic">
-        Classic
-        <input type="radio" name="mode" value="classic" id="classic" checked="checked">
-      </label>
+      <form name="modeSwitcher">
+        <label for="classic">
+          Classic
+          <input type="radio" name="mode" value="classic" id="classic" checked="checked">
+        </label>
 
-      <label for="hard">
-        Hard
-        <input type="radio" name="mode" value="hard" id="hard">
-      </label>
-    </form>
-  </div>
-
-  <div class="speed-controller">
-    <h2>
-      Game Speed
-    </h2>
-
-    <div class="controller">
-      <div>Speed: <span id="speed">100<small>ms</small></span></div>
-      <input type="range" id="speedInp" value="100" min="1" max="3000">
+        <label for="hard">
+          Hard
+          <input type="radio" name="mode" value="hard" id="hard">
+        </label>
+      </form>
     </div>
-  </div>
 
-  <div id="matrix" class="classic"></div>
+    <div class="speed-controller">
+      <h2>
+        Game Speed
+      </h2>
 
-  <div id="mobileArrows" class="mobile-arrows">
-    <div keyCode="38" class="top"></div>
-    <div keyCode="40" class="bottom"></div>
-    <div keyCode="37" class="left"></div>
-    <div keyCode="39" class="right"></div>
+      <div class="controller">
+        <div>Speed: <span id="speed">100<small>ms</small></span></div>
+        <input type="range" id="sppedRegulator" value="100" min="1" max="3000">
+      </div>
+    </div>
+
+    <div id="matrix" class="classic"></div>
+
+    <div id="mobileArrows" class="mobile-arrows">
+      <div keyCode="38" class="top"></div>
+      <div keyCode="40" class="bottom"></div>
+      <div keyCode="37" class="left"></div>
+      <div keyCode="39" class="right"></div>
+    </div>
+
+    <div id="arrowSizeRegulator" class="arrows-regulator">
+      <div>Arrow Size</div>
+      <input type="range" id="arrowsPos" value="180" min="130" max="250">
+    </div>
   </div>
 </body>
 

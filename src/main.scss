@@ -1,6 +1,14 @@
 @import url(./assets/styles/global.scss);
 $primary: teal;
 
+.main {
+  display: block;
+}
+
+.loader {
+  display: none;
+}
+
 #matrix {
   display: flex;
   flex-wrap: wrap;
@@ -92,11 +100,11 @@ $primary: teal;
     >div {
       width: 100px;
     }
-
-    input {
-      cursor: grab;
-    }
   }
+}
+
+input[type="range"] {
+  cursor: grab;
 }
 
 .control-container {
@@ -107,8 +115,8 @@ $primary: teal;
 
 .mobile-arrows {
   display: none;
-  width: 97px;
-  height: 97px;
+  width: 180px;
+  height: 180px;
   margin: 30px auto;
   position: relative;
   text-align: center;
@@ -138,30 +146,48 @@ $primary: teal;
 
   .left,
   .right {
-    border-top: 18px solid transparent;
-    border-bottom: 18px solid transparent;
+    border-top: 28px solid transparent;
+    border-bottom: 28px solid transparent;
   }
 
   .top,
   .bottom {
-    border-left: 18px solid transparent;
-    border-right: 18px solid transparent;
+    border-left: 28px solid transparent;
+    border-right: 28px solid transparent;
   }
 
   .right {
-    border-left: 30px solid teal;
+    border-left: 40px solid teal;
   }
 
   .left {
-    border-right: 30px solid teal;
+    border-right: 40px solid teal;
   }
 
   .top {
-    border-bottom: 30px solid teal;
+    border-bottom: 40px solid teal;
   }
 
   .bottom {
-    border-top: 30px solid teal;
+    border-top: 40px solid teal;
+  }
+}
+
+.arrows-regulator {
+  display: none;
+  position: fixed;
+  right: -20px;
+  top: 460px;
+
+  input {
+    transform: rotate(270deg);
+  }
+
+  div {
+    position: absolute;
+    bottom: -80px;
+    color: yellow;
+    left: 30px;
   }
 }
 
@@ -178,6 +204,10 @@ $primary: teal;
       background-size: 8px 3px;
       background-position: 24px 5.5px;
     }
+  }
+
+  .arrows-regulator {
+    display: block !important;
   }
 
   .mobile-arrows {
