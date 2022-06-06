@@ -72,7 +72,7 @@ var startTimer$ = new rxjs__WEBPACK_IMPORTED_MODULE_10__.BehaviorSubject(speed).
   return (0,rxjs__WEBPACK_IMPORTED_MODULE_12__.timer)(0, parseInt(period));
 })); // Speed Controller
 
-(0,rxjs__WEBPACK_IMPORTED_MODULE_6__.fromEvent)(_utils_constants__WEBPACK_IMPORTED_MODULE_4__.speedInp, 'input').pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_13__.debounceTime)(600), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(function (event) {
+(0,rxjs__WEBPACK_IMPORTED_MODULE_6__.fromEvent)(_utils_constants__WEBPACK_IMPORTED_MODULE_4__.sppedRegulator, 'input').pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_13__.debounceTime)(600), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(function (event) {
   return parseInt(+event.target.value);
 }), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_14__.tap)(function (speed) {
   var speedEl = document.getElementById('speed');
@@ -81,7 +81,11 @@ var startTimer$ = new rxjs__WEBPACK_IMPORTED_MODULE_10__.BehaviorSubject(speed).
 
 var keyPress$ = (0,rxjs__WEBPACK_IMPORTED_MODULE_9__.merge)((0,rxjs__WEBPACK_IMPORTED_MODULE_15__.of)(39), keyUpEvent$, mobileEvents$).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(function (keyCode) {
   return activeKeyCode && keyCode === 37 && activeKeyCode === 39 || keyCode === 39 && activeKeyCode === 37 || keyCode === 38 && activeKeyCode === 40 || keyCode === 40 && activeKeyCode === 38 ? activeKeyCode : keyCode;
-}), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_16__.distinctUntilChanged)(), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_11__.switchMap)(function (keyCode) {
+}), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_16__.distinctUntilChanged)(), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_14__.tap)(function () {
+  if (window.innerWidth <= 680) {
+    navigator.vibrate(300);
+  }
+}), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_11__.switchMap)(function (keyCode) {
   return startTimer$.pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(function (index) {
     return keyCode;
   }));
@@ -90,10 +94,6 @@ var keyPress$ = (0,rxjs__WEBPACK_IMPORTED_MODULE_9__.merge)((0,rxjs__WEBPACK_IMP
 
   if (activeKeyCode !== keyCode) {
     (0,_utils_toggler__WEBPACK_IMPORTED_MODULE_2__.toggleClass)(_matrix__WEBPACK_IMPORTED_MODULE_1__.grid[_matrix__WEBPACK_IMPORTED_MODULE_1__.snake[0]], false, _utils_constants__WEBPACK_IMPORTED_MODULE_4__.transformCodes[activeKeyCode]);
-  }
-
-  if (window.innerWidth <= 680) {
-    navigator.vibrate(300);
   }
 
   move(keyCode);
@@ -255,6 +255,30 @@ var alert = {
 
 /***/ }),
 
+/***/ "./src/app/utils/arrow-regulator.js":
+/*!******************************************!*\
+  !*** ./src/app/utils/arrow-regulator.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "calculate": () => (/* binding */ calculate)
+/* harmony export */ });
+var calculate = function calculate() {
+  var inp = document.getElementById('arrowSizeRegulator');
+  inp.addEventListener('input', function (event) {
+    if (window.innerWidth <= 680) {
+      var value = event.target.value;
+      var mobileArrows = document.getElementById('mobileArrows');
+      mobileArrows.style.width = "".concat(value, "px");
+      mobileArrows.style.height = "".concat(value, "px");
+    }
+  });
+};
+
+/***/ }),
+
 /***/ "./src/app/utils/constants.js":
 /*!************************************!*\
   !*** ./src/app/utils/constants.js ***!
@@ -264,12 +288,12 @@ var alert = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "keyCodes": () => (/* binding */ keyCodes),
-/* harmony export */   "speedInp": () => (/* binding */ speedInp),
+/* harmony export */   "sppedRegulator": () => (/* binding */ sppedRegulator),
 /* harmony export */   "squareCount": () => (/* binding */ squareCount),
 /* harmony export */   "switchNumber": () => (/* binding */ switchNumber),
 /* harmony export */   "transformCodes": () => (/* binding */ transformCodes)
 /* harmony export */ });
-var speedInp = document.getElementById('speedInp');
+var sppedRegulator = document.getElementById('sppedRegulator');
 var squareCount = 3200;
 var switchNumber = 64;
 var keyCodes = {
@@ -404,7 +428,7 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_assets_styles_global_scss__WEBPACK_IMPORTED_MODULE_2__["default"]);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_3___default()(___CSS_LOADER_URL_IMPORT_0___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#matrix {\n  display: flex;\n  flex-wrap: wrap;\n  width: 640px;\n  margin: 20px auto;\n  background-color: teal;\n}\n#matrix.classic {\n  border-top: 3px solid yellow;\n  border-bottom: 3px solid yellow;\n}\n#matrix.hard {\n  border: 3px solid yellow;\n}\n#matrix div {\n  width: 10px;\n  height: 10px;\n}\n#matrix .head {\n  font-size: 15px !important;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  background-size: 16px 5px;\n  outline: 1px solid #4F5D73;\n}\n#matrix .left {\n  transform: rotate(180deg) scale(1.3);\n}\n#matrix .top {\n  transform: rotate(270deg) scale(1.3);\n}\n#matrix .bottom {\n  transform: rotate(90deg) scale(1.3);\n}\n#matrix .right {\n  transform: rotate(0deg) scale(1.3);\n}\n#matrix .snake {\n  background-color: yellow;\n}\n#matrix .apple {\n  background-color: red;\n}\n#matrix .banana {\n  background-color: yellow;\n}\n#matrix .orange {\n  background-color: orange;\n}\n#matrix .grape {\n  background-color: rebeccapurple;\n}\n#matrix .kiwi {\n  background-color: #15e815;\n}\n\n.mode-switcher {\n  text-align: center;\n  margin: 15px 0 5px 0;\n  color: teal;\n}\n.mode-switcher label {\n  cursor: pointer;\n}\n\n.speed-controller {\n  color: teal;\n  margin-top: 10px;\n}\n.speed-controller .controller {\n  margin-top: 15px;\n  display: flex;\n  justify-content: center;\n}\n.speed-controller .controller > div {\n  width: 100px;\n}\n.speed-controller .controller input {\n  cursor: grab;\n}\n\n.control-container {\n  width: 100%;\n  margin: 15px auto;\n  text-align: center;\n}\n\n.mobile-arrows {\n  display: none;\n  width: 97px;\n  height: 97px;\n  margin: 30px auto;\n  position: relative;\n  text-align: center;\n  align-items: center;\n  justify-content: center;\n}\n.mobile-arrows div {\n  position: absolute;\n  cursor: pointer;\n}\n.mobile-arrows .top {\n  top: 0;\n}\n.mobile-arrows .bottom {\n  bottom: 0;\n}\n.mobile-arrows .left {\n  left: 0;\n}\n.mobile-arrows .right {\n  right: 0;\n}\n.mobile-arrows .left,\n.mobile-arrows .right {\n  border-top: 18px solid transparent;\n  border-bottom: 18px solid transparent;\n}\n.mobile-arrows .top,\n.mobile-arrows .bottom {\n  border-left: 18px solid transparent;\n  border-right: 18px solid transparent;\n}\n.mobile-arrows .right {\n  border-left: 30px solid teal;\n}\n.mobile-arrows .left {\n  border-right: 30px solid teal;\n}\n.mobile-arrows .top {\n  border-bottom: 30px solid teal;\n}\n.mobile-arrows .bottom {\n  border-top: 30px solid teal;\n}\n\n@media screen and (max-width: 680px) {\n  #matrix {\n    width: 320px !important;\n  }\n  #matrix div {\n    width: 5px;\n    height: 5px;\n  }\n  #matrix .head {\n    background-size: 8px 3px;\n    background-position: 24px 5.5px;\n  }\n\n  .mobile-arrows {\n    display: flex !important;\n  }\n}", "",{"version":3,"sources":["webpack://./src/main.scss"],"names":[],"mappings":"AAGA;EACE,aAAA;EACA,eAAA;EACA,YAAA;EACA,iBAAA;EACA,sBAPQ;AAMV;AAGE;EACE,4BAAA;EACA,+BAAA;AADJ;AAIE;EACE,wBAAA;AAFJ;AAKE;EACE,WAAA;EACA,YAAA;AAHJ;AAME;EACE,0BAAA;EACA,yDAAA;EACA,yBAAA;EACA,0BAAA;AAJJ;AAOE;EACE,oCAAA;AALJ;AAQE;EACE,oCAAA;AANJ;AASE;EACE,mCAAA;AAPJ;AAUE;EACE,kCAAA;AARJ;AAWE;EACE,wBAAA;AATJ;AAYE;EACE,qBAAA;AAVJ;AAaE;EACE,wBAAA;AAXJ;AAcE;EACE,wBAAA;AAZJ;AAeE;EACE,+BAAA;AAbJ;AAgBE;EACE,yBAAA;AAdJ;;AAkBA;EACE,kBAAA;EACA,oBAAA;EACA,WA1EQ;AA2DV;AAiBE;EACE,eAAA;AAfJ;;AAmBA;EACE,WAlFQ;EAmFR,gBAAA;AAhBF;AAkBE;EACE,gBAAA;EACA,aAAA;EACA,uBAAA;AAhBJ;AAkBI;EACE,YAAA;AAhBN;AAmBI;EACE,YAAA;AAjBN;;AAsBA;EACE,WAAA;EACA,iBAAA;EACA,kBAAA;AAnBF;;AAsBA;EACE,aAAA;EACA,WAAA;EACA,YAAA;EACA,iBAAA;EACA,kBAAA;EACA,kBAAA;EACA,mBAAA;EACA,uBAAA;AAnBF;AAqBE;EACE,kBAAA;EACA,eAAA;AAnBJ;AAsBE;EACE,MAAA;AApBJ;AAuBE;EACE,SAAA;AArBJ;AAwBE;EACE,OAAA;AAtBJ;AAyBE;EACE,QAAA;AAvBJ;AA0BE;;EAEE,kCAAA;EACA,qCAAA;AAxBJ;AA2BE;;EAEE,mCAAA;EACA,oCAAA;AAzBJ;AA4BE;EACE,4BAAA;AA1BJ;AA6BE;EACE,6BAAA;AA3BJ;AA8BE;EACE,8BAAA;AA5BJ;AA+BE;EACE,2BAAA;AA7BJ;;AAiCA;EACE;IACE,uBAAA;EA9BF;EAgCE;IACE,UAAA;IACA,WAAA;EA9BJ;EAiCE;IACE,wBAAA;IACA,+BAAA;EA/BJ;;EAmCA;IACE,wBAAA;EAhCF;AACF","sourcesContent":["@import url(./assets/styles/global.scss);\r\n$primary: teal;\r\n\r\n#matrix {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  width: 640px;\r\n  margin: 20px auto;\r\n  background-color: $primary;\r\n\r\n  &.classic {\r\n    border-top: 3px solid yellow;\r\n    border-bottom: 3px solid yellow;\r\n  }\r\n\r\n  &.hard {\r\n    border: 3px solid yellow;\r\n  }\r\n\r\n  div {\r\n    width: 10px;\r\n    height: 10px;\r\n  }\r\n\r\n  .head {\r\n    font-size: 15px !important;\r\n    background-image: url(./assets/images/eye.svg);\r\n    background-size: 16px 5px;\r\n    outline: 1px solid #4F5D73;\r\n  }\r\n\r\n  .left {\r\n    transform: rotate(180deg) scale(1.3);\r\n  }\r\n\r\n  .top {\r\n    transform: rotate(270deg) scale(1.3);\r\n  }\r\n\r\n  .bottom {\r\n    transform: rotate(90deg) scale(1.3);\r\n  }\r\n\r\n  .right {\r\n    transform: rotate(0deg) scale(1.3);\r\n  }\r\n\r\n  .snake {\r\n    background-color: yellow;\r\n  }\r\n\r\n  .apple {\r\n    background-color: red;\r\n  }\r\n\r\n  .banana {\r\n    background-color: yellow;\r\n  }\r\n\r\n  .orange {\r\n    background-color: orange;\r\n  }\r\n\r\n  .grape {\r\n    background-color: rebeccapurple;\r\n  }\r\n\r\n  .kiwi {\r\n    background-color: #15e815;\r\n  }\r\n}\r\n\r\n.mode-switcher {\r\n  text-align: center;\r\n  margin: 15px 0 5px 0;\r\n  color: $primary;\r\n\r\n  label {\r\n    cursor: pointer;\r\n  }\r\n}\r\n\r\n.speed-controller {\r\n  color: $primary;\r\n  margin-top: 10px;\r\n\r\n  .controller {\r\n    margin-top: 15px;\r\n    display: flex;\r\n    justify-content: center;\r\n\r\n    >div {\r\n      width: 100px;\r\n    }\r\n\r\n    input {\r\n      cursor: grab;\r\n    }\r\n  }\r\n}\r\n\r\n.control-container {\r\n  width: 100%;\r\n  margin: 15px auto;\r\n  text-align: center;\r\n}\r\n\r\n.mobile-arrows {\r\n  display: none;\r\n  width: 97px;\r\n  height: 97px;\r\n  margin: 30px auto;\r\n  position: relative;\r\n  text-align: center;\r\n  align-items: center;\r\n  justify-content: center;\r\n\r\n  div {\r\n    position: absolute;\r\n    cursor: pointer;\r\n  }\r\n\r\n  .top {\r\n    top: 0;\r\n  }\r\n\r\n  .bottom {\r\n    bottom: 0;\r\n  }\r\n\r\n  .left {\r\n    left: 0;\r\n  }\r\n\r\n  .right {\r\n    right: 0;\r\n  }\r\n\r\n  .left,\r\n  .right {\r\n    border-top: 18px solid transparent;\r\n    border-bottom: 18px solid transparent;\r\n  }\r\n\r\n  .top,\r\n  .bottom {\r\n    border-left: 18px solid transparent;\r\n    border-right: 18px solid transparent;\r\n  }\r\n\r\n  .right {\r\n    border-left: 30px solid teal;\r\n  }\r\n\r\n  .left {\r\n    border-right: 30px solid teal;\r\n  }\r\n\r\n  .top {\r\n    border-bottom: 30px solid teal;\r\n  }\r\n\r\n  .bottom {\r\n    border-top: 30px solid teal;\r\n  }\r\n}\r\n\r\n@media screen and (max-width: 680px) {\r\n  #matrix {\r\n    width: 320px !important;\r\n\r\n    div {\r\n      width: 5px;\r\n      height: 5px;\r\n    }\r\n\r\n    .head {\r\n      background-size: 8px 3px;\r\n      background-position: 24px 5.5px;\r\n    }\r\n  }\r\n\r\n  .mobile-arrows {\r\n    display: flex !important;\r\n  }\r\n\r\n\r\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".main {\n  display: block;\n}\n\n.loader {\n  display: none;\n}\n\n#matrix {\n  display: flex;\n  flex-wrap: wrap;\n  width: 640px;\n  margin: 20px auto;\n  background-color: teal;\n}\n#matrix.classic {\n  border-top: 3px solid yellow;\n  border-bottom: 3px solid yellow;\n}\n#matrix.hard {\n  border: 3px solid yellow;\n}\n#matrix div {\n  width: 10px;\n  height: 10px;\n}\n#matrix .head {\n  font-size: 15px !important;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  background-size: 16px 5px;\n  outline: 1px solid #4F5D73;\n}\n#matrix .left {\n  transform: rotate(180deg) scale(1.3);\n}\n#matrix .top {\n  transform: rotate(270deg) scale(1.3);\n}\n#matrix .bottom {\n  transform: rotate(90deg) scale(1.3);\n}\n#matrix .right {\n  transform: rotate(0deg) scale(1.3);\n}\n#matrix .snake {\n  background-color: yellow;\n}\n#matrix .apple {\n  background-color: red;\n}\n#matrix .banana {\n  background-color: yellow;\n}\n#matrix .orange {\n  background-color: orange;\n}\n#matrix .grape {\n  background-color: rebeccapurple;\n}\n#matrix .kiwi {\n  background-color: #15e815;\n}\n\n.mode-switcher {\n  text-align: center;\n  margin: 15px 0 5px 0;\n  color: teal;\n}\n.mode-switcher label {\n  cursor: pointer;\n}\n\n.speed-controller {\n  color: teal;\n  margin-top: 10px;\n}\n.speed-controller .controller {\n  margin-top: 15px;\n  display: flex;\n  justify-content: center;\n}\n.speed-controller .controller > div {\n  width: 100px;\n}\n\ninput[type=range] {\n  cursor: grab;\n}\n\n.control-container {\n  width: 100%;\n  margin: 15px auto;\n  text-align: center;\n}\n\n.mobile-arrows {\n  display: none;\n  width: 180px;\n  height: 180px;\n  margin: 30px auto;\n  position: relative;\n  text-align: center;\n  align-items: center;\n  justify-content: center;\n}\n.mobile-arrows div {\n  position: absolute;\n  cursor: pointer;\n}\n.mobile-arrows .top {\n  top: 0;\n}\n.mobile-arrows .bottom {\n  bottom: 0;\n}\n.mobile-arrows .left {\n  left: 0;\n}\n.mobile-arrows .right {\n  right: 0;\n}\n.mobile-arrows .left,\n.mobile-arrows .right {\n  border-top: 28px solid transparent;\n  border-bottom: 28px solid transparent;\n}\n.mobile-arrows .top,\n.mobile-arrows .bottom {\n  border-left: 28px solid transparent;\n  border-right: 28px solid transparent;\n}\n.mobile-arrows .right {\n  border-left: 40px solid teal;\n}\n.mobile-arrows .left {\n  border-right: 40px solid teal;\n}\n.mobile-arrows .top {\n  border-bottom: 40px solid teal;\n}\n.mobile-arrows .bottom {\n  border-top: 40px solid teal;\n}\n\n.arrows-regulator {\n  display: none;\n  position: fixed;\n  right: -20px;\n  top: 460px;\n}\n.arrows-regulator input {\n  transform: rotate(270deg);\n}\n.arrows-regulator div {\n  position: absolute;\n  bottom: -80px;\n  color: yellow;\n  left: 30px;\n}\n\n@media screen and (max-width: 680px) {\n  #matrix {\n    width: 320px !important;\n  }\n  #matrix div {\n    width: 5px;\n    height: 5px;\n  }\n  #matrix .head {\n    background-size: 8px 3px;\n    background-position: 24px 5.5px;\n  }\n\n  .arrows-regulator {\n    display: block !important;\n  }\n\n  .mobile-arrows {\n    display: flex !important;\n  }\n}", "",{"version":3,"sources":["webpack://./src/main.scss"],"names":[],"mappings":"AAGA;EACE,cAAA;AADF;;AAIA;EACE,aAAA;AADF;;AAIA;EACE,aAAA;EACA,eAAA;EACA,YAAA;EACA,iBAAA;EACA,sBAfQ;AAcV;AAGE;EACE,4BAAA;EACA,+BAAA;AADJ;AAIE;EACE,wBAAA;AAFJ;AAKE;EACE,WAAA;EACA,YAAA;AAHJ;AAME;EACE,0BAAA;EACA,yDAAA;EACA,yBAAA;EACA,0BAAA;AAJJ;AAOE;EACE,oCAAA;AALJ;AAQE;EACE,oCAAA;AANJ;AASE;EACE,mCAAA;AAPJ;AAUE;EACE,kCAAA;AARJ;AAWE;EACE,wBAAA;AATJ;AAYE;EACE,qBAAA;AAVJ;AAaE;EACE,wBAAA;AAXJ;AAcE;EACE,wBAAA;AAZJ;AAeE;EACE,+BAAA;AAbJ;AAgBE;EACE,yBAAA;AAdJ;;AAkBA;EACE,kBAAA;EACA,oBAAA;EACA,WAlFQ;AAmEV;AAiBE;EACE,eAAA;AAfJ;;AAmBA;EACE,WA1FQ;EA2FR,gBAAA;AAhBF;AAkBE;EACE,gBAAA;EACA,aAAA;EACA,uBAAA;AAhBJ;AAkBI;EACE,YAAA;AAhBN;;AAqBA;EACE,YAAA;AAlBF;;AAqBA;EACE,WAAA;EACA,iBAAA;EACA,kBAAA;AAlBF;;AAqBA;EACE,aAAA;EACA,YAAA;EACA,aAAA;EACA,iBAAA;EACA,kBAAA;EACA,kBAAA;EACA,mBAAA;EACA,uBAAA;AAlBF;AAoBE;EACE,kBAAA;EACA,eAAA;AAlBJ;AAqBE;EACE,MAAA;AAnBJ;AAsBE;EACE,SAAA;AApBJ;AAuBE;EACE,OAAA;AArBJ;AAwBE;EACE,QAAA;AAtBJ;AAyBE;;EAEE,kCAAA;EACA,qCAAA;AAvBJ;AA0BE;;EAEE,mCAAA;EACA,oCAAA;AAxBJ;AA2BE;EACE,4BAAA;AAzBJ;AA4BE;EACE,6BAAA;AA1BJ;AA6BE;EACE,8BAAA;AA3BJ;AA8BE;EACE,2BAAA;AA5BJ;;AAgCA;EACE,aAAA;EACA,eAAA;EACA,YAAA;EACA,UAAA;AA7BF;AA+BE;EACE,yBAAA;AA7BJ;AAgCE;EACE,kBAAA;EACA,aAAA;EACA,aAAA;EACA,UAAA;AA9BJ;;AAkCA;EACE;IACE,uBAAA;EA/BF;EAiCE;IACE,UAAA;IACA,WAAA;EA/BJ;EAkCE;IACE,wBAAA;IACA,+BAAA;EAhCJ;;EAoCA;IACE,yBAAA;EAjCF;;EAoCA;IACE,wBAAA;EAjCF;AACF","sourcesContent":["@import url(./assets/styles/global.scss);\r\n$primary: teal;\r\n\r\n.main {\r\n  display: block;\r\n}\r\n\r\n.loader {\r\n  display: none;\r\n}\r\n\r\n#matrix {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  width: 640px;\r\n  margin: 20px auto;\r\n  background-color: $primary;\r\n\r\n  &.classic {\r\n    border-top: 3px solid yellow;\r\n    border-bottom: 3px solid yellow;\r\n  }\r\n\r\n  &.hard {\r\n    border: 3px solid yellow;\r\n  }\r\n\r\n  div {\r\n    width: 10px;\r\n    height: 10px;\r\n  }\r\n\r\n  .head {\r\n    font-size: 15px !important;\r\n    background-image: url(./assets/images/eye.svg);\r\n    background-size: 16px 5px;\r\n    outline: 1px solid #4F5D73;\r\n  }\r\n\r\n  .left {\r\n    transform: rotate(180deg) scale(1.3);\r\n  }\r\n\r\n  .top {\r\n    transform: rotate(270deg) scale(1.3);\r\n  }\r\n\r\n  .bottom {\r\n    transform: rotate(90deg) scale(1.3);\r\n  }\r\n\r\n  .right {\r\n    transform: rotate(0deg) scale(1.3);\r\n  }\r\n\r\n  .snake {\r\n    background-color: yellow;\r\n  }\r\n\r\n  .apple {\r\n    background-color: red;\r\n  }\r\n\r\n  .banana {\r\n    background-color: yellow;\r\n  }\r\n\r\n  .orange {\r\n    background-color: orange;\r\n  }\r\n\r\n  .grape {\r\n    background-color: rebeccapurple;\r\n  }\r\n\r\n  .kiwi {\r\n    background-color: #15e815;\r\n  }\r\n}\r\n\r\n.mode-switcher {\r\n  text-align: center;\r\n  margin: 15px 0 5px 0;\r\n  color: $primary;\r\n\r\n  label {\r\n    cursor: pointer;\r\n  }\r\n}\r\n\r\n.speed-controller {\r\n  color: $primary;\r\n  margin-top: 10px;\r\n\r\n  .controller {\r\n    margin-top: 15px;\r\n    display: flex;\r\n    justify-content: center;\r\n\r\n    >div {\r\n      width: 100px;\r\n    }\r\n  }\r\n}\r\n\r\ninput[type=\"range\"] {\r\n  cursor: grab;\r\n}\r\n\r\n.control-container {\r\n  width: 100%;\r\n  margin: 15px auto;\r\n  text-align: center;\r\n}\r\n\r\n.mobile-arrows {\r\n  display: none;\r\n  width: 180px;\r\n  height: 180px;\r\n  margin: 30px auto;\r\n  position: relative;\r\n  text-align: center;\r\n  align-items: center;\r\n  justify-content: center;\r\n\r\n  div {\r\n    position: absolute;\r\n    cursor: pointer;\r\n  }\r\n\r\n  .top {\r\n    top: 0;\r\n  }\r\n\r\n  .bottom {\r\n    bottom: 0;\r\n  }\r\n\r\n  .left {\r\n    left: 0;\r\n  }\r\n\r\n  .right {\r\n    right: 0;\r\n  }\r\n\r\n  .left,\r\n  .right {\r\n    border-top: 28px solid transparent;\r\n    border-bottom: 28px solid transparent;\r\n  }\r\n\r\n  .top,\r\n  .bottom {\r\n    border-left: 28px solid transparent;\r\n    border-right: 28px solid transparent;\r\n  }\r\n\r\n  .right {\r\n    border-left: 40px solid teal;\r\n  }\r\n\r\n  .left {\r\n    border-right: 40px solid teal;\r\n  }\r\n\r\n  .top {\r\n    border-bottom: 40px solid teal;\r\n  }\r\n\r\n  .bottom {\r\n    border-top: 40px solid teal;\r\n  }\r\n}\r\n\r\n.arrows-regulator {\r\n  display: none;\r\n  position: fixed;\r\n  right: -20px;\r\n  top: 460px;\r\n\r\n  input {\r\n    transform: rotate(270deg);\r\n  }\r\n\r\n  div {\r\n    position: absolute;\r\n    bottom: -80px;\r\n    color: yellow;\r\n    left: 30px;\r\n  }\r\n}\r\n\r\n@media screen and (max-width: 680px) {\r\n  #matrix {\r\n    width: 320px !important;\r\n\r\n    div {\r\n      width: 5px;\r\n      height: 5px;\r\n    }\r\n\r\n    .head {\r\n      background-size: 8px 3px;\r\n      background-position: 24px 5.5px;\r\n    }\r\n  }\r\n\r\n  .arrows-regulator {\r\n    display: block !important;\r\n  }\r\n\r\n  .mobile-arrows {\r\n    display: flex !important;\r\n  }\r\n\r\n\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -4286,18 +4310,21 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _main_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main.scss */ "./src/main.scss");
 /* harmony import */ var _app_utils_alert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app/utils/alert */ "./src/app/utils/alert.js");
-/* harmony import */ var _app_app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/app */ "./src/app/app.js");
+/* harmony import */ var _app_utils_arrow_regulator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/utils/arrow-regulator */ "./src/app/utils/arrow-regulator.js");
+/* harmony import */ var _app_app__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app/app */ "./src/app/app.js");
+
 
 
 
 var startBtn = document.getElementById('start');
 startBtn.addEventListener('click', function () {
-  (0,_app_app__WEBPACK_IMPORTED_MODULE_2__.run)();
+  (0,_app_app__WEBPACK_IMPORTED_MODULE_3__.run)();
   _app_utils_alert__WEBPACK_IMPORTED_MODULE_1__.alert.hide();
 });
-(0,_app_app__WEBPACK_IMPORTED_MODULE_2__.run)();
+(0,_app_app__WEBPACK_IMPORTED_MODULE_3__.run)();
+(0,_app_utils_arrow_regulator__WEBPACK_IMPORTED_MODULE_2__.calculate)();
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle6270c201cd2f6bba8cc1.js.map
+//# sourceMappingURL=bundle528219e5e62434f7389d.js.map
