@@ -4,14 +4,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RxJs Game</title>
 </head>
 
 <body>
   <div class="alert" id="alert">
-    <h1>Game Over</h1>
-    <div class="control-container">
-      <button type="button" id="start" class="btn start">Start Over</button>
+    <div class="alert-content">
+      <h1>Game Over</h1>
+      <div class="control-container">
+        <button type="button" id="start" class="btn start">Start Over</button>
+      </div>
     </div>
   </div>
 
@@ -44,10 +47,14 @@
     </div>
   </div>
 
-  <div class="backdrop" id="backdrop"></div>
-
   <div id="matrix" class="classic"></div>
-  <!-- for-hard -->
+
+  <div id="mobileArrows" class="mobile-arrows">
+    <div keyCode="38" class="top"></div>
+    <div keyCode="40" class="bottom"></div>
+    <div keyCode="37" class="left"></div>
+    <div keyCode="39" class="right"></div>
+  </div>
 </body>
 
 </html>

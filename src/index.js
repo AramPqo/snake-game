@@ -1,6 +1,6 @@
 import './main.scss';
-import { run } from './app/app';
 import { alert } from './app/utils/alert';
+import { run } from './app/app';
 
 const startBtn = document.getElementById('start');
 startBtn.addEventListener('click', () => {

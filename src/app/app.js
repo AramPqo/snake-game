@@ -1,5 +1,5 @@
-import { fromEvent, timer, BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, takeUntil, map, switchMap, debounceTime, filter, tap } from 'rxjs/operators';
+import { fromEvent, timer, BehaviorSubject, merge, of } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, debounceTime, filter, tap } from 'rxjs/operators';
 import { alert } from './utils/alert';
 import { grid, snake, matrix, createSquares } from './matrix';
 import { toggleClass, togglePoint } from './utils/toggler';
@@ -14,27 +14,41 @@ let direction = 1;
 let activeKeyCode = 39;
 let subscription;
 
-togglePoint(grid[point], true);
+const mobileArrows$ = Array(document.getElementById('mobileArrows').children).map((v) => fromEvent(v, 'click'));
+const keyUpEvent$ = fromEvent(document, 'keyup').pipe(
+  filter((e) => e.keyCode <= 40 && e.keyCode >= 37),
+  map(e => e.keyCode)
+);
 
-// Speed Controller
-fromEvent(speedInp, 'input').pipe(
-  tap(event => {
-    speed = parseInt(+event.target.value);
-    const speedEl = document.getElementById('speed');
-    speedEl.innerHTML = `${speed}<small>ms</small>`;
-  }),
-  debounceTime(500),
-  tap(_ => startTimer$.next(speed))).subscribe();
+const mobileEvents$ = (
+  merge(...mobileArrows$).pipe(map(event => +event.target.getAttribute('keyCode'), tap(_ => navigator.vibrate(200))))
+);
+
+togglePoint(grid[point], true);
 
 // Timer
 const startTimer$ = new BehaviorSubject(speed)
-  .pipe(switchMap(period => timer(0, parseInt(period))));
+  .pipe(
+    switchMap(period => timer(0, parseInt(period)))
+  );
+
+// Speed Controller
+fromEvent(speedInp, 'input').pipe(
+  debounceTime(600),
+  map(event => parseInt(+event.target.value)),
+  tap(speed => {
+    const speedEl = document.getElementById('speed');
+    speedEl.innerHTML = `${speed}<small>ms</small>`;
+  })).subscribe(startTimer$);
+
 
 // Key Press
 const keyPress$ =
-  fromEvent(document, 'keyup').pipe(
-    filter((e) => e.keyCode <= 40 && e.keyCode >= 37),
-    map(e => e.keyCode),
+  merge(
+    of(39),
+    keyUpEvent$,
+    mobileEvents$
+  ).pipe(
     map(keyCode =>
       (
         activeKeyCode &&
@@ -47,6 +61,7 @@ const keyPress$ =
     distinctUntilChanged(),
     switchMap((keyCode) => startTimer$.pipe(map(index => keyCode))),
     tap(keyCode => {
+      console.log(keyCode);
       direction = keyCodes[keyCode];
       if (activeKeyCode !== keyCode) {
         toggleClass(grid[snake[0]], false, transformCodes[activeKeyCode]);
@@ -55,13 +70,6 @@ const keyPress$ =
       move(keyCode);
     })
   );
-
-// First streem
-const go$ = new BehaviorSubject(0).pipe(
-  switchMap(_ => startTimer$),
-  tap(_ => move(39)),
-  takeUntil(keyPress$)
-);
 
 const generatePoint = () => {
   const newPoint = Math.floor(Math.random() * squareCount);
@@ -145,5 +153,4 @@ const reset = () => {
 
 export const run = () => {
   subscription = keyPress$.subscribe();
-  go$.subscribe();
 }

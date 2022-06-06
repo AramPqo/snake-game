@@ -17,7 +17,6 @@ export const createSquares = () => {
   toggleClass(grid[snake[0]], true, ['right', 'head']);
 };
 
-
 for (let i = 0; i < squareCount; i++) {
   const node = document.createElement('div');
   matrix.appendChild(node);
