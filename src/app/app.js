@@ -21,7 +21,7 @@ const keyUpEvent$ = fromEvent(document, 'keyup').pipe(
 );
 
 const mobileEvents$ = (
-  merge(...mobileArrows$).pipe(map(event => +event.target.getAttribute('keyCode'), tap(_ => navigator.vibrate(200))))
+  merge(...mobileArrows$).pipe(map(event => +event.target.getAttribute('keyCode')))
 );
 
 togglePoint(grid[point], true);
@@ -61,10 +61,13 @@ const keyPress$ =
     distinctUntilChanged(),
     switchMap((keyCode) => startTimer$.pipe(map(index => keyCode))),
     tap(keyCode => {
-      console.log(keyCode);
       direction = keyCodes[keyCode];
       if (activeKeyCode !== keyCode) {
         toggleClass(grid[snake[0]], false, transformCodes[activeKeyCode]);
+      }
+
+      if (window.innerWidth <= 680) {
+        navigator.vibrate(300);
       }
 
       move(keyCode);
