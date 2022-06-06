@@ -105,27 +105,8 @@ $primary: teal;
   text-align: center;
 }
 
-
 .mobile-arrows {
   display: none;
-}
-
-@media screen and (max-width: 680px) {
-  #matrix {
-    width: 320px !important;
-
-    div {
-      width: 5px;
-      height: 5px;
-    }
-  }
-
-  .mobile-arrows {
-    display: flex !important;
-  }
-}
-
-.mobile-arrows {
   width: 97px;
   height: 97px;
   margin: 30px auto;
@@ -182,4 +163,26 @@ $primary: teal;
   .bottom {
     border-top: 30px solid teal;
   }
+}
+
+@media screen and (max-width: 680px) {
+  #matrix {
+    width: 320px !important;
+
+    div {
+      width: 5px;
+      height: 5px;
+    }
+
+    .head {
+      background-size: 8px 3px;
+      background-position: 24px 5.5px;
+    }
+  }
+
+  .mobile-arrows {
+    display: flex !important;
+  }
+
+
 }
