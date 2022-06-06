@@ -14,14 +14,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/dist/esm5/internal/observable/fromEvent.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/dist/esm5/internal/observable/merge.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/dist/esm5/internal/BehaviorSubject.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/dist/esm5/internal/observable/timer.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/dist/esm5/internal/BehaviorSubject.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/dist/esm5/internal/observable/timer.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/dist/esm5/internal/observable/of.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/dist/esm5/internal/operators/filter.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/dist/esm5/internal/operators/map.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/dist/esm5/internal/operators/tap.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/dist/esm5/internal/operators/switchMap.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/dist/esm5/internal/operators/debounceTime.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/dist/esm5/internal/operators/switchMap.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/dist/esm5/internal/operators/debounceTime.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/dist/esm5/internal/operators/tap.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/dist/esm5/internal/operators/distinctUntilChanged.js");
 /* harmony import */ var _utils_alert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils/alert */ "./src/app/utils/alert.js");
 /* harmony import */ var _matrix__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./matrix */ "./src/app/matrix.js");
@@ -65,34 +65,35 @@ var keyUpEvent$ = (0,rxjs__WEBPACK_IMPORTED_MODULE_6__.fromEvent)(document, 'key
 }));
 var mobileEvents$ = rxjs__WEBPACK_IMPORTED_MODULE_9__.merge.apply(void 0, _toConsumableArray(mobileArrows$)).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(function (event) {
   return +event.target.getAttribute('keyCode');
-}, (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_10__.tap)(function (_) {
-  return navigator.vibrate(200);
-})));
+}));
 (0,_utils_toggler__WEBPACK_IMPORTED_MODULE_2__.togglePoint)(_matrix__WEBPACK_IMPORTED_MODULE_1__.grid[point], true); // Timer
 
-var startTimer$ = new rxjs__WEBPACK_IMPORTED_MODULE_11__.BehaviorSubject(speed).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_12__.switchMap)(function (period) {
-  return (0,rxjs__WEBPACK_IMPORTED_MODULE_13__.timer)(0, parseInt(period));
+var startTimer$ = new rxjs__WEBPACK_IMPORTED_MODULE_10__.BehaviorSubject(speed).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_11__.switchMap)(function (period) {
+  return (0,rxjs__WEBPACK_IMPORTED_MODULE_12__.timer)(0, parseInt(period));
 })); // Speed Controller
 
-(0,rxjs__WEBPACK_IMPORTED_MODULE_6__.fromEvent)(_utils_constants__WEBPACK_IMPORTED_MODULE_4__.speedInp, 'input').pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_14__.debounceTime)(600), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(function (event) {
+(0,rxjs__WEBPACK_IMPORTED_MODULE_6__.fromEvent)(_utils_constants__WEBPACK_IMPORTED_MODULE_4__.speedInp, 'input').pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_13__.debounceTime)(600), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(function (event) {
   return parseInt(+event.target.value);
-}), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_10__.tap)(function (speed) {
+}), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_14__.tap)(function (speed) {
   var speedEl = document.getElementById('speed');
   speedEl.innerHTML = "".concat(speed, "<small>ms</small>");
 })).subscribe(startTimer$); // Key Press
 
 var keyPress$ = (0,rxjs__WEBPACK_IMPORTED_MODULE_9__.merge)((0,rxjs__WEBPACK_IMPORTED_MODULE_15__.of)(39), keyUpEvent$, mobileEvents$).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(function (keyCode) {
   return activeKeyCode && keyCode === 37 && activeKeyCode === 39 || keyCode === 39 && activeKeyCode === 37 || keyCode === 38 && activeKeyCode === 40 || keyCode === 40 && activeKeyCode === 38 ? activeKeyCode : keyCode;
-}), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_16__.distinctUntilChanged)(), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_12__.switchMap)(function (keyCode) {
+}), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_16__.distinctUntilChanged)(), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_11__.switchMap)(function (keyCode) {
   return startTimer$.pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(function (index) {
     return keyCode;
   }));
-}), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_10__.tap)(function (keyCode) {
-  console.log(keyCode);
+}), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_14__.tap)(function (keyCode) {
   direction = _utils_constants__WEBPACK_IMPORTED_MODULE_4__.keyCodes[keyCode];
 
   if (activeKeyCode !== keyCode) {
     (0,_utils_toggler__WEBPACK_IMPORTED_MODULE_2__.toggleClass)(_matrix__WEBPACK_IMPORTED_MODULE_1__.grid[_matrix__WEBPACK_IMPORTED_MODULE_1__.snake[0]], false, _utils_constants__WEBPACK_IMPORTED_MODULE_4__.transformCodes[activeKeyCode]);
+  }
+
+  if (window.innerWidth <= 680) {
+    navigator.vibrate(300);
   }
 
   move(keyCode);
@@ -4299,4 +4300,4 @@ startBtn.addEventListener('click', function () {
 
 /******/ })()
 ;
-//# sourceMappingURL=bundlef765f588b8d1c8693d8f.js.map
+//# sourceMappingURL=bundle6270c201cd2f6bba8cc1.js.map
